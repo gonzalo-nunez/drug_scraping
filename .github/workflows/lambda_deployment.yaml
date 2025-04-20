@@ -10,20 +10,37 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install zip tool
-        uses: montudor/action-zip@v1
-      - name: Create Zip file for Lambda function
-        run: zip -r code.zip .
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: AWS CLI v2
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies into ./package
+        run: |
+          python -m pip install --upgrade pip
+          mkdir -p package
+          pip install -r requirements.txt -t package/
+
+      - name: Copy application code into package
+        run: |
+          cp main.py package/
+          cp -r src package/
+
+      - name: Zip the package
+        run: |
+          cd package
+          zip -r ../code.zip .
+
+      - name: Deploy to AWS Lambda
         uses: imehedi/actions-awscli-v2@latest
         with:
-          args: "lambda update-function-code \
-            --function-name arn:aws:lambda:us-east-2:067403941021:function:drug_scraping \
-            --zip-file fileb://code.zip"
+          args: >
+            lambda update-function-code
+            --function-name arn:aws:lambda:us-east-2:067403941021:function:drug_scraping
+            --zip-file fileb://code.zip
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: "us-east-2"
+          AWS_DEFAULT_REGION: us-east-2
