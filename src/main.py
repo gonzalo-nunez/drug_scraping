@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from utils import *
+from src.utils import *
 import pandas as pd
-
+ #try
 app = FastAPI()
 
 app.add_middleware(
