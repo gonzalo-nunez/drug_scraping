@@ -1,8 +1,6 @@
 pandas
 numpy
 requests
-matplotlib
-bs4
 chembl-webresource-client
 fastapi
 uvicorn

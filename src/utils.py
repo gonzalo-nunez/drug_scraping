@@ -1,14 +1,9 @@
 import requests
 import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 import re
-import difflib
-import random
-from bs4 import BeautifulSoup
 import requests
 import pandas as pd
-import ast
 from io import StringIO
 from collections import Counter
 from chembl_webresource_client.new_client import new_client
