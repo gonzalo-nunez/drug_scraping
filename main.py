@@ -2,7 +2,9 @@ from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 from src.utils import *
 import pandas as pd
- #try
+
+from mangum import Mangum
+
 app = FastAPI()
 
 app.add_middleware(
@@ -29,3 +31,5 @@ def get_clinical_data(condition: str):
         'drug_stats': drug_list#,
         #'drug_data': drug_df.to_dict(orient='records')
     }
+
+handler = Mangum(app)

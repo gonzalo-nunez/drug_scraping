@@ -6,3 +6,4 @@ bs4
 chembl-webresource-client
 fastapi
 uvicorn
+mangum
